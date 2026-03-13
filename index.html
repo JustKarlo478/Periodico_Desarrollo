@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EL COSMOS — Periódico Espacial</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #0d0d0d;
+    --ink-mid: #2a2a2a;
+    --ink-soft: #555;
+    --paper: #f5f0e8;
+    --paper-dark: #e8e0cc;
+    --accent-red: #8b1a1a;
+    --accent-gold: #b8860b;
+    --rule: #1a1a1a;
+    --column-gap: 20px;
+  }
+
+  body {
+    background: #ccc5b3;
+    font-family: 'Libre Baskerville', Georgia, serif;
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 2rem 1rem;
+  }
+
+  .newspaper {
+    max-width: 1100px;
+    margin: 0 auto;
+    background: var(--paper);
+    box-shadow: 0 4px 40px rgba(0,0,0,0.4), 0 1px 0 #fff inset;
+    padding: 0;
+  }
+
+  /* ===== MASTHEAD ===== */
+  .masthead {
+    border-bottom: 3px double var(--rule);
+    padding: 1.5rem 2rem 1rem;
+    text-align: center;
+    position: relative;
+    background: var(--paper);
+  }
+
+  .masthead::before {
+    content: '';
+    display: block;
+    height: 3px;
+    background: var(--rule);
+    margin-bottom: 8px;
+  }
+
+  .top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 0.5px solid var(--rule);
+  }
+
+  .newspaper-name {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 5.5rem;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin: 0.3rem 0;
+  }
+
+  .newspaper-name span {
+    color: var(--accent-red);
+  }
+
+  .tagline {
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.8rem;
+  }
+
+  .edition-bar {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-top: 0.5px solid var(--rule);
+    padding-top: 0.5rem;
+  }
+
+  /* ===== FRONT PAGE LEAD ===== */
+  .front-page {
+    padding: 1.5rem 2rem;
+    border-bottom: 2px solid var(--rule);
+  }
+
+  /* Big headline */
+  .lead-headline {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.8rem;
+    font-weight: 900;
+    line-height: 1.05;
+    text-align: center;
+    color: var(--ink);
+    margin-bottom: 0.3rem;
+    text-wrap: balance;
+  }
+
+  .lead-deck {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.2rem;
+    text-align: center;
+    color: var(--ink-soft);
+    margin-bottom: 1rem;
+    text-wrap: balance;
+  }
+
+  .byline-lead {
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-soft);
+    margin-bottom: 1.2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #aaa;
+  }
+
+  /* ===== COLUMN LAYOUT ===== */
+  .columns-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0;
+  }
+
+  .columns-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+
+  .columns-2-1 {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 0;
+  }
+
+  .col {
+    padding: 0 var(--column-gap);
+    border-right: 0.5px solid #999;
+  }
+
+  .col:first-child { padding-left: 0; }
+  .col:last-child { padding-right: 0; border-right: none; }
+
+  /* Lead story columns wrapper */
+  .lead-columns {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr 1fr;
+    gap: 0;
+    margin-top: 1rem;
+  }
+
+  .lead-col-center {
+    padding: 0 var(--column-gap);
+    border-left: 0.5px solid #999;
+    border-right: 0.5px solid #999;
+  }
+
+  .lead-col-side {
+    padding: 0 var(--column-gap);
+  }
+
+  .lead-col-side:first-child { padding-left: 0; }
+  .lead-col-side:last-child { padding-right: 0; }
+
+  /* ===== ARTICLE ELEMENTS ===== */
+  .article-headline {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1.3rem;
+    line-height: 1.2;
+    color: var(--ink);
+    margin-bottom: 0.4rem;
+    text-wrap: balance;
+  }
+
+  .article-headline.large {
+    font-size: 1.9rem;
+  }
+
+  .article-headline.xl {
+    font-size: 2.5rem;
+  }
+
+  .article-subhead {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+    margin-bottom: 0.6rem;
+    line-height: 1.4;
+  }
+
+  .byline {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-soft);
+    margin-bottom: 0.5rem;
+  }
+
+  p.body {
+    font-size: 0.875rem;
+    line-height: 1.7;
+    color: var(--ink-mid);
+    margin-bottom: 0.7rem;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  p.body:first-of-type::first-letter {
+    float: left;
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    font-weight: 900;
+    line-height: 0.8;
+    margin: 0.05em 0.08em 0 0;
+    color: var(--ink);
+  }
+
+  .section-rule {
+    border: none;
+    border-top: 2px solid var(--rule);
+    margin: 1.5rem 0 1rem;
+  }
+
+  .thin-rule {
+    border: none;
+    border-top: 0.5px solid #999;
+    margin: 1rem 0;
+  }
+
+  /* ===== PULL QUOTE ===== */
+  .pull-quote {
+    border-top: 3px solid var(--ink);
+    border-bottom: 3px solid var(--ink);
+    padding: 0.8rem 0.5rem;
+    margin: 1rem 0;
+    text-align: center;
+  }
+
+  .pull-quote p {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.15rem;
+    line-height: 1.4;
+    color: var(--ink);
+  }
+
+  .pull-quote cite {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-soft);
+    display: block;
+    margin-top: 0.4rem;
+    font-style: normal;
+  }
+
+  /* ===== PHOTO PLACEHOLDER ===== */
+  .photo {
+    width: 100%;
+    overflow: hidden;
+    margin: 0.8rem 0;
+    background: var(--paper-dark);
+    border: 0.5px solid #999;
+  }
+
+  .photo-inner {
+    width: 100%;
+    aspect-ratio: 4/3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .photo-rocket {
+    background: linear-gradient(180deg, #0a0a1a 0%, #1a1a3e 40%, #2a3a6e 70%, #3a2a2a 100%);
+  }
+
+  .photo-moon {
+    background: linear-gradient(180deg, #050508 0%, #0d0d2e 50%, #1a1a3a 100%);
+  }
+
+  .photo-mars {
+    background: linear-gradient(180deg, #1a0a00 0%, #3a1500 50%, #6b2900 100%);
+  }
+
+  .photo svg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+
+  .caption {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.62rem;
+    line-height: 1.4;
+    color: var(--ink-soft);
+    padding: 0.3rem 0.4rem;
+    border-top: 0.5px solid #999;
+    font-style: italic;
+  }
+
+  /* ===== SECTION LABEL ===== */
+  .section-label {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--paper);
+    background: var(--accent-red);
+    display: inline-block;
+    padding: 2px 8px;
+    margin-bottom: 0.5rem;
+  }
+
+  /* ===== SECOND SECTION ===== */
+  .section-header {
+    padding: 0.5rem 2rem;
+    border-bottom: 2px solid var(--rule);
+    border-top: 2px solid var(--rule);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .section-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .section-header .section-num {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    opacity: 0.7;
+    text-transform: uppercase;
+  }
+
+  .section-body {
+    padding: 1.5rem 2rem;
+    border-bottom: 2px solid var(--rule);
+  }
+
+  /* ===== DATA BOX ===== */
+  .data-box {
+    border: 1.5px solid var(--ink);
+    padding: 0.8rem;
+    margin: 1rem 0;
+    background: var(--paper-dark);
+  }
+
+  .data-box h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border-bottom: 1px solid var(--ink);
+    padding-bottom: 0.3rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .data-row {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.72rem;
+    padding: 0.2rem 0;
+    border-bottom: 0.5px solid #bbb;
+  }
+
+  .data-row:last-child { border-bottom: none; }
+  .data-row .val { font-weight: 600; color: var(--accent-red); }
+
+  /* ===== WEATHER / SIDEBAR ===== */
+  .sidebar-box {
+    border: 1.5px solid var(--ink);
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+  }
+
+  .sidebar-box h4 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border-bottom: 1px solid var(--ink);
+    padding-bottom: 0.3rem;
+  }
+
+  .sidebar-item {
+    font-size: 0.78rem;
+    padding: 0.25rem 0;
+    border-bottom: 0.5px dotted #aaa;
+    font-family: 'Source Sans 3', sans-serif;
+    line-height: 1.4;
+    color: var(--ink-mid);
+  }
+
+  .sidebar-item strong {
+    display: block;
+    font-family: 'Playfair Display', serif;
+    font-size: 0.82rem;
+    color: var(--ink);
+  }
+
+  /* ===== FOOTER ===== */
+  .footer-wrapper {
+    border-top: 3px double var(--rule);
+    margin-top: 0;
+  }
+
+  .footer-sections {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 0;
+    padding: 1.8rem 2rem;
+    border-bottom: 1px solid #bbb;
+  }
+
+  .footer-col {
+    padding: 0 1.2rem;
+    border-right: 0.5px solid #bbb;
+  }
+
+  .footer-col:first-child { padding-left: 0; }
+  .footer-col:last-child { border-right: none; padding-right: 0; }
+
+  .footer-col h5 {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-soft);
+    border-bottom: 0.5px solid #bbb;
+    padding-bottom: 0.4rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .footer-col p {
+    font-size: 0.75rem;
+    line-height: 1.6;
+    color: var(--ink-mid);
+    font-family: 'Libre Baskerville', serif;
+    margin-bottom: 0.4rem;
+  }
+
+  .footer-col ul {
+    list-style: none;
+  }
+
+  .footer-col ul li {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.72rem;
+    color: var(--ink-mid);
+    padding: 0.18rem 0;
+    border-bottom: 0.5px dotted #ccc;
+    line-height: 1.4;
+  }
+
+  .footer-col ul li:last-child { border-bottom: none; }
+
+  .footer-col ul li strong {
+    display: block;
+    font-family: 'Playfair Display', serif;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  .footer-masthead {
+    text-align: center;
+    padding: 0.8rem 2rem;
+    border-bottom: 0.5px solid #bbb;
+  }
+
+  .footer-masthead .name {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+
+  .footer-masthead .name span { color: var(--accent-red); }
+
+  .footer-masthead .footer-tagline {
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    font-size: 0.7rem;
+    color: var(--ink-soft);
+    margin-top: 0.15rem;
+  }
+
+  .footer-legal {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.6rem 2rem;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.6rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    background: var(--paper-dark);
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 768px) {
+    .lead-columns,
+    .columns-3,
+    .columns-2,
+    .columns-2-1 { grid-template-columns: 1fr; }
+
+    .col,
+    .lead-col-center,
+    .lead-col-side {
+      padding: 0 !important;
+      border-right: none !important;
+      border-left: none !important;
+      border-bottom: 0.5px solid #999;
+      padding-bottom: 1rem !important;
+      margin-bottom: 1rem;
+    }
+
+    .newspaper-name { font-size: 3rem; }
+    .lead-headline { font-size: 2.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="newspaper">
+
+  <!-- ===== MASTHEAD ===== -->
+  <header class="masthead">
+    <div class="top-bar">
+      <span>Fundado en 2025 · Vol. I, No. 42</span>
+      <span>Viernes, 13 de marzo de 2026</span>
+      <span>Precio: 2 créditos lunares</span>
+    </div>
+    <h1 class="newspaper-name">EL <span>COSMOS</span></h1>
+    <p class="tagline">"Todo lo que existe, existe en el espacio — y el espacio no para de expandirse"</p>
+    <div class="edition-bar">
+      <span>Noticias Espaciales</span>
+      <span>·</span>
+      <span>Ciencia & Exploración</span>
+      <span>·</span>
+      <span>Tecnología Orbital</span>
+      <span>·</span>
+      <span>Opinión Galáctica</span>
+    </div>
+  </header>
+
+  <!-- ===== FRONT PAGE ===== -->
+  <section class="front-page">
+    <h2 class="lead-headline">La nueva carrera espacial:<br>esta vez, todos quieren ganar</h2>
+    <p class="lead-deck">Por primera vez en la historia, más de 80 naciones y una docena de empresas privadas compiten simultáneamente por dominar la órbita baja, la Luna y Marte</p>
+    <div class="byline-lead">Por Valentina Cruz, Editora Científica &nbsp;·&nbsp; Con colaboración de la Oficina de Corresponsalías Orbitales</div>
+
+    <div class="lead-columns">
+
+      <!-- LEFT COL -->
+      <div class="lead-col-side">
+        <div class="section-label">Exclusiva</div>
+        <p class="body">Hace sesenta años, la carrera espacial era un duelo de superpotencias librado sobre fondo de guerra fría. Hoy, el cosmos se ha democratizado de una manera que ningún planificador de los años sesenta habría podido imaginar: cohetes diseñados en garajes de Silicon Valley orbitan junto a satélites militares chinos, y una empresa texana ensaya el aterrizaje en la Luna mientras la Agencia Espacial Europea calibra sus propios planes de colonización lunar.</p>
+        <p class="body">El catalizador de esta explosión no es solo tecnológico. Es económico. El coste de llevar un kilogramo al espacio ha caído más de un 95% en los últimos quince años, gracias principalmente a los cohetes reutilizables. Lo que antes requería el presupuesto de un estado nación ahora está al alcance de universidades, empresas medianas y consorcios regionales.</p>
+        <p class="body">Esta democratización tiene consecuencias profundas y no todas celebradas. La órbita terrestre baja está cada vez más congestionada. A principios de 2026 hay más de 10.000 satélites operativos, y se espera que esa cifra se triplique en la próxima década. Los astrónomos, alarmados, advierten que la contaminación lumínica amenaza con cegar los grandes telescopios terrestres.</p>
+
+        <div class="pull-quote">
+          <p>"El espacio era un privilegio de naciones. Hoy es un mercado. Mañana, será un hogar."</p>
+          <cite>— Dr. Arnav Bose, MIT Media Lab Space Initiative</cite>
+        </div>
+      </div>
+
+      <!-- CENTER COL (with photo) -->
+      <div class="lead-col-center">
+        <div class="photo">
+          <div class="photo-inner photo-rocket">
+            <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+              <!-- Stars -->
+              <circle cx="20" cy="20" r="1" fill="white" opacity="0.8"/>
+              <circle cx="80" cy="40" r="0.8" fill="white" opacity="0.6"/>
+              <circle cx="150" cy="15" r="1.2" fill="white" opacity="0.9"/>
+              <circle cx="230" cy="30" r="0.7" fill="white" opacity="0.7"/>
+              <circle cx="300" cy="10" r="1" fill="white" opacity="0.8"/>
+              <circle cx="360" cy="50" r="0.9" fill="white" opacity="0.6"/>
+              <circle cx="50" cy="80" r="0.8" fill="white" opacity="0.5"/>
+              <circle cx="320" cy="70" r="1.1" fill="white" opacity="0.7"/>
+              <circle cx="180" cy="60" r="0.6" fill="white" opacity="0.8"/>
+              <circle cx="260" cy="90" r="0.9" fill="white" opacity="0.5"/>
+              <circle cx="100" cy="120" r="0.7" fill="white" opacity="0.6"/>
+              <circle cx="340" cy="130" r="1" fill="white" opacity="0.7"/>
+              <circle cx="30" cy="160" r="0.8" fill="white" opacity="0.5"/>
+              <circle cx="380" cy="180" r="0.6" fill="white" opacity="0.8"/>
+              <circle cx="200" cy="20" r="0.8" fill="white" opacity="0.9"/>
+
+              <!-- Rocket body -->
+              <g transform="translate(180, 40)">
+                <!-- Nose cone -->
+                <polygon points="20,0 5,50 35,50" fill="#d0d0d0"/>
+                <!-- Body -->
+                <rect x="5" y="48" width="30" height="80" rx="3" fill="#e0e0e0"/>
+                <!-- Window -->
+                <circle cx="20" cy="75" r="8" fill="#a0d0ff" opacity="0.8"/>
+                <circle cx="20" cy="75" r="6" fill="#6ab8f0" opacity="0.6"/>
+                <!-- Fins left -->
+                <polygon points="5,128 -15,165 5,155" fill="#b0b0b0"/>
+                <!-- Fins right -->
+                <polygon points="35,128 55,165 35,155" fill="#b0b0b0"/>
+                <!-- Engine nozzle -->
+                <rect x="8" y="126" width="24" height="14" rx="2" fill="#999"/>
+                <!-- Flame -->
+                <ellipse cx="20" cy="155" rx="12" ry="22" fill="#ff6a00" opacity="0.9"/>
+                <ellipse cx="20" cy="158" rx="7" ry="16" fill="#ffcc00" opacity="0.8"/>
+                <ellipse cx="20" cy="162" rx="4" ry="10" fill="white" opacity="0.6"/>
+              </g>
+
+              <!-- Earth curve at bottom -->
+              <ellipse cx="200" cy="330" rx="280" ry="100" fill="#1a5276" opacity="0.5"/>
+              <ellipse cx="200" cy="330" rx="280" ry="95" fill="#2980b9" opacity="0.3"/>
+            </svg>
+          </div>
+          <p class="caption">ARCHIVO · Lanzamiento del cohete Orion-7 desde la plataforma submarina ecuatorial de Pacific Launch Co. — la primera plataforma oceánica privada de la historia. La empresa completó su octavo vuelo en enero pasado.</p>
+        </div>
+
+        <p class="body">Pero los argumentos a favor de esta proliferación son igualmente poderosos. Cientos de satélites de observación monitorean en tiempo real el cambio climático, los incendios forestales, la deforestación y las mareas rojas. Los sistemas GPS de nueva generación permiten una precisión milimétrica que está revolucionando la agricultura, la logística y la medicina de emergencia en zonas remotas.</p>
+        <p class="body">Y luego está la pregunta más audaz: los humanos en Marte. En 2026, tres misiones distintas planean llevar a cabo pruebas de habitabilidad: una estadounidense-japonesa, una china y una árabe-europea. Ninguna aterrizará en el planeta rojo antes de 2031, pero la carrera ya está definiendo alianzas geopolíticas del siglo.</p>
+      </div>
+
+      <!-- RIGHT COL -->
+      <div class="lead-col-side">
+
+        <div class="data-box">
+          <h4>El marcador espacial · 2026</h4>
+          <div class="data-row"><span>Satélites en órbita</span><span class="val">10.847</span></div>
+          <div class="data-row"><span>Lanzamientos este año</span><span class="val">312</span></div>
+          <div class="data-row"><span>Agencias espaciales activas</span><span class="val">82</span></div>
+          <div class="data-row"><span>Empresas privadas orbitales</span><span class="val">240+</span></div>
+          <div class="data-row"><span>Costo/kg a órbita baja</span><span class="val">$430</span></div>
+          <div class="data-row"><span>Personas en el espacio ahora</span><span class="val">14</span></div>
+          <div class="data-row"><span>Misiones lunares planificadas</span><span class="val">18</span></div>
+        </div>
+
+        <p class="body">China es quizás el actor que más ha sorprendido a los analistas occidentales. Su programa espacial, antes considerado un seguidor rezagado, completó en 2024 una estación espacial tripulada permanente, llevó un rover al lado oculto de la Luna y firmó acuerdos con doce países africanos y latinoamericanos para acceso compartido a su infraestructura orbital.</p>
+        <p class="body">India, por su parte, celebró en 2023 el primer alunizaje suave en el polo sur lunar. Un logro que sacudió la narrativa de que solo las grandes potencias podían alcanzar la Luna. Hoy, la agencia ISRO gestiona el sistema de satélites de navegación más sofisticado del hemisferio sur.</p>
+
+        <div class="sidebar-box">
+          <h4>Próximos lanzamientos</h4>
+          <div class="sidebar-item">
+            <strong>18 mar · Artemis VII</strong>
+            Cuarta tripulación lunar internacional; primer geólogo marciano en práctica.
+          </div>
+          <div class="sidebar-item">
+            <strong>29 mar · Shenzhou-22</strong>
+            Rotación de tripulación en la estación Tiangong. Incluye primer taikonauta árabe.
+          </div>
+          <div class="sidebar-item">
+            <strong>4 abr · StarHarvest-1</strong>
+            Primer intento comercial de minería de asteroides. Empresa: Asteroid Mining Corp.
+          </div>
+          <div class="sidebar-item">
+            <strong>11 abr · ISRO LunarBase-2</strong>
+            Módulo de perforación para búsqueda de agua bajo la superficie polar lunar.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SECTION 2: CIENCIA ===== -->
+  <div class="section-header">
+    <span class="section-num">Sección II</span>
+    <h2>Ciencia & Descubrimiento</h2>
+  </div>
+
+  <section class="section-body">
+    <div class="columns-3">
+
+      <div class="col">
+        <div class="section-label">Astronomía</div>
+        <h3 class="article-headline large">El telescopio que ve el pasado del universo</h3>
+        <p class="article-subhead">El sucesor del James Webb capta imágenes de galaxias a menos de 200 millones de años del Big Bang</p>
+        <div class="byline">Por Dr. Sofía Mendoza · Corresponsal Astronómica</div>
+
+        <div class="photo">
+          <div class="photo-inner photo-moon">
+            <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+              <!-- Deep space background with galaxy -->
+              <circle cx="200" cy="150" r="90" fill="none" stroke="#4a3070" stroke-width="40" opacity="0.3"/>
+              <circle cx="200" cy="150" r="60" fill="#1a0a30" opacity="0.7"/>
+              <ellipse cx="200" cy="150" rx="120" ry="20" fill="#7a50c0" opacity="0.15" transform="rotate(-25 200 150)"/>
+              <ellipse cx="200" cy="150" rx="80" ry="12" fill="#9a70e0" opacity="0.2" transform="rotate(-25 200 150)"/>
+              <!-- Stars and nebula dots -->
+              <circle cx="50" cy="30" r="1.5" fill="white" opacity="0.9"/>
+              <circle cx="120" cy="20" r="1" fill="#aef" opacity="0.8"/>
+              <circle cx="280" cy="45" r="1.5" fill="white" opacity="0.7"/>
+              <circle cx="350" cy="25" r="1" fill="#fea" opacity="0.9"/>
+              <circle cx="30" cy="200" r="1.2" fill="white" opacity="0.6"/>
+              <circle cx="370" cy="180" r="1" fill="#aef" opacity="0.7"/>
+              <circle cx="100" cy="250" r="1.5" fill="white" opacity="0.8"/>
+              <circle cx="320" cy="260" r="1.2" fill="#fea" opacity="0.6"/>
+              <circle cx="200" cy="150" r="6" fill="white" opacity="0.9"/>
+              <circle cx="200" cy="150" r="3" fill="white"/>
+            </svg>
+          </div>
+          <p class="caption">CRÉDITO: ESA/NASA · Imagen procesada del campo profundo ultravioleta. Cada mancha es una galaxia completa.</p>
+        </div>
+
+        <p class="body">El Telescopio Espacio-Tiempo (TET), lanzado en 2025 como sucesor del James Webb, ha capturado las imágenes más antiguas jamás obtenidas del universo. Las fotografías revelan galaxias en formación cuando el cosmos tenía menos del 2% de su edad actual, estructuras tan primitivas que desafían varios modelos cosmológicos establecidos.</p>
+        <p class="body">El hallazgo más perturbador: algunas de estas proto-galaxias son significativamente más masivas de lo que la teoría del Big Bang permite. "Es como encontrar a un adulto en una guardería", explicó la Dra. Amara Osei, investigadora principal del proyecto. "Necesitamos reescribir algunas páginas del manual."</p>
+      </div>
+
+      <div class="col">
+        <div class="section-label">Biología Espacial</div>
+        <h3 class="article-headline large">Vivir en Marte: el cuerpo humano no está listo</h3>
+        <p class="article-subhead">Un año en gravedad marciana redujo la densidad ósea de los voluntarios en un 18%, según estudio en la estación lunar</p>
+        <div class="byline">Por Dr. Kenji Watanabe · Medicina Espacial</div>
+
+        <p class="body">El sueño de colonizar Marte choca con un obstáculo silencioso: la biología humana. Un nuevo estudio realizado en la base lunar Artemis Outpost, donde doce voluntarios vivieron durante un año en condiciones similares a la gravedad marciana (0.38 g), revela daños esqueléticos, cardiovasculares y neurológicos que superan las peores predicciones.</p>
+        <p class="body">Los participantes perdieron en promedio un 18% de densidad ósea y un 12% de masa muscular, a pesar de seguir rigurosos programas de ejercicio de cuatro horas diarias. La presión intracraneal aumentó en todos los sujetos, generando problemas visuales que persisten meses después del retorno.</p>
+
+        <div class="pull-quote">
+          <p>"No es que Marte sea hostil. Es que somos criaturas de la Tierra, y nuestros cuerpos lo saben."</p>
+          <cite>— Dra. Linh Nguyen, Hospital Espacial ESA</cite>
+        </div>
+
+        <p class="body">Los investigadores proponen dos caminos: desarrollar fármacos que engañen al organismo haciéndole creer que vive bajo gravedad terrestre, o diseñar hábitats que generen gravedad artificial mediante rotación. La segunda opción requiere una ingeniería monumental, pero podría ser inevitable para misiones de más de dos años.</p>
+        <p class="body">El estudio concluye que el viaje de ida a Marte es médicamente manejable. El problema es el regreso: el cuerpo deteriorado por dos años en gravedad baja tendría que soportar el brutal aterrizaje en la Tierra.</p>
+      </div>
+
+      <div class="col">
+        <div class="section-label">Ingeniería</div>
+        <h3 class="article-headline">Impresoras 3D que construyen bases lunares</h3>
+        <div class="byline">Por Ingrid Sørensen · Tecnología Espacial</div>
+        <p class="body">La empresa ICON, ya conocida por imprimir casas en Texas, ha demostrado en laboratorio la capacidad de su sistema Olympus para construir estructuras de varios pisos usando regolito lunar como único material. El sistema, que opera de manera autónoma, podría levantar una base de cuatro habitaciones en 45 días sin intervención humana.</p>
+        <hr class="thin-rule">
+
+        <div class="section-label">Economía Orbital</div>
+        <h3 class="article-headline">El negocio del helio-3 lunar podría valer billones</h3>
+        <div class="byline">Por Marcus Okonkwo · Economía Espacial</div>
+        <p class="body">El helio-3, un isótopo escaso en la Tierra pero abundante en el suelo lunar, es el combustible ideal para reactores de fusión nuclear. Con los primeros reactores de fusión comerciales proyectados para la década de 2030, la carrera por los depósitos lunares ha comenzado formalmente. Tres países ya han presentado reclamaciones de exploración ante la ONU.</p>
+        <hr class="thin-rule">
+
+        <div class="section-label">Opinión</div>
+        <h3 class="article-headline">¿A quién pertenece el espacio?</h3>
+        <div class="byline">Por Lyra Kessler · Editorialista</div>
+        <p class="body">El Tratado del Espacio Exterior de 1967 prohíbe la apropiación nacional del espacio. Pero nada dice sobre las empresas privadas. Mientras los abogados debaten, los cohetes vuelan y los contratos se firman. El espacio, como tantas fronteras antes que él, corre el riesgo de ser colonizado antes de ser legislado.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== SECTION 3: MARTE ===== -->
+  <div class="section-header">
+    <span class="section-num">Sección III</span>
+    <h2>La Ruta a Marte</h2>
+  </div>
+
+  <section class="section-body">
+    <div class="columns-2-1">
+
+      <div class="col">
+        <div class="section-label">Reportaje Especial</div>
+        <h3 class="article-headline xl">2031: El año que el humano pisa suelo marciano</h3>
+        <p class="article-subhead">Cinco misiones compiten para ser las primeras. Todas dicen tener el plan. Ninguna ha probado aún que puede traer a su tripulación de regreso.</p>
+        <div class="byline">Por Rashida Kamau · Reportera de Exploración</div>
+
+        <div class="photo">
+          <div class="photo-inner photo-mars" style="aspect-ratio: 16/7;">
+            <svg viewBox="0 0 700 250" xmlns="http://www.w3.org/2000/svg">
+              <!-- Mars surface panorama -->
+              <!-- Sky -->
+              <rect x="0" y="0" width="700" height="150" fill="#3a1500" opacity="0.6"/>
+              <!-- Dust haze -->
+              <ellipse cx="350" cy="200" rx="450" ry="120" fill="#8b4500" opacity="0.3"/>
+              <!-- Surface rocks -->
+              <ellipse cx="100" cy="200" rx="60" ry="30" fill="#6b3000"/>
+              <ellipse cx="250" cy="215" rx="40" ry="20" fill="#7a3800"/>
+              <ellipse cx="500" cy="205" rx="80" ry="35" fill="#5a2800"/>
+              <ellipse cx="650" cy="220" rx="50" ry="25" fill="#6b3000"/>
+              <!-- Surface ground -->
+              <rect x="0" y="190" width="700" height="60" fill="#5a2500"/>
+              <!-- Habitat dome far away -->
+              <ellipse cx="400" cy="175" rx="35" ry="20" fill="#d0c0b0" opacity="0.7"/>
+              <rect x="365" y="175" width="70" height="18" fill="#c0b0a0" opacity="0.7"/>
+              <!-- Solar panels -->
+              <line x1="340" y1="178" x2="310" y2="170" stroke="#888" stroke-width="1"/>
+              <rect x="295" y="165" width="20" height="8" fill="#4a6a8a" opacity="0.8"/>
+              <line x1="460" y1="178" x2="490" y2="170" stroke="#888" stroke-width="1"/>
+              <rect x="488" y="165" width="20" height="8" fill="#4a6a8a" opacity="0.8"/>
+              <!-- Dust devil far right -->
+              <ellipse cx="620" cy="120" rx="8" ry="40" fill="#c87040" opacity="0.25"/>
+              <!-- Stars barely visible in Martian sky -->
+              <circle cx="100" cy="40" r="0.8" fill="white" opacity="0.4"/>
+              <circle cx="200" cy="60" r="0.6" fill="white" opacity="0.3"/>
+              <circle cx="550" cy="30" r="0.9" fill="white" opacity="0.4"/>
+              <!-- Phobos moon -->
+              <ellipse cx="580" cy="55" rx="8" ry="6" fill="#c0a080" opacity="0.6"/>
+            </svg>
+          </div>
+          <p class="caption">ILUSTRACIÓN · Recreación artística de la base Ares-1, diseñada por la agencia combinada NASA-JAXA. Dos anillos de hábitats inflables cubiertos de regolito marciano como protección contra la radiación.</p>
+        </div>
+
+        <div class="columns-2">
+          <div class="col" style="padding-left:0;">
+            <p class="body">El cohete que lleve humanos a Marte necesitará transportar entre 40 y 60 toneladas de carga útil, incluyendo a seis astronautas, una base prefabricada, 18 meses de suministros y el combustible para el regreso. Ningún vehículo actual cumple todos estos requisitos, aunque el Starship de SpaceX y el SLS Block 2 de NASA son los candidatos más cercanos.</p>
+            <p class="body">El verdadero obstáculo no es el lanzamiento sino la llegada. Marte tiene una atmósfera demasiado delgada para frenar una nave pesada mediante aerofrenado convencional, pero demasiado densa para ignorarla. El problema lleva el sarcástico apodo de "el terror de los siete minutos" multiplicado por diez.</p>
+          </div>
+          <div class="col">
+            <p class="body">La ventana de lanzamiento óptima a Marte se abre aproximadamente cada 26 meses, cuando ambos planetas están alineados favorablemente. La próxima gran ventana es en noviembre de 2028 — no para una misión tripulada, sino para los vehículos de carga que deberán llegar antes que los astronautas y prepararles el terreno.</p>
+            <p class="body">Si esa ventana se aprovecha bien, 2031 es realista. Si no, la siguiente oportunidad es 2033, y los planes se retrasan dos años más. En la exploración espacial, el reloj no lo marca el presupuesto, sino la mecánica orbital.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SIDEBAR RIGHT -->
+      <div class="col">
+
+        <div class="sidebar-box">
+          <h4>Las 5 misiones a Marte</h4>
+          <div class="sidebar-item">
+            <strong>1. NASA / JAXA — Ares Program</strong>
+            Misión tripulada de 18 meses. Seis astronautas. Presupuesto: $85.000M. Año objetivo: 2031.
+          </div>
+          <div class="sidebar-item">
+            <strong>2. CNSA — Tianhuo</strong>
+            Programa chino. Cuatro taikonautas. Base permanente desde el primer viaje. Año: 2031–2032.
+          </div>
+          <div class="sidebar-item">
+            <strong>3. ESA / UAE — Red Planet One</strong>
+            Primera misión árabe-europea. Seis tripulantes. Enfoque científico. Año: 2033.
+          </div>
+          <div class="sidebar-item">
+            <strong>4. SpaceX — Mars Colony Alpha</strong>
+            Misión privada con 20 colonos. Sin plan de regreso garantizado. Año: 2030–2032.
+          </div>
+          <div class="sidebar-item">
+            <strong>5. ISRO / Brasil — Mangalyaan-H</strong>
+            Misión de bajo costo, dos astronautas. Énfasis en tecnología asequible. Año: 2035.
+          </div>
+        </div>
+
+        <div class="data-box">
+          <h4>Distancias y tiempos</h4>
+          <div class="data-row"><span>Tierra–Marte (mín.)</span><span class="val">54.6M km</span></div>
+          <div class="data-row"><span>Tierra–Marte (máx.)</span><span class="val">401M km</span></div>
+          <div class="data-row"><span>Viaje de ida (óptimo)</span><span class="val">7 meses</span></div>
+          <div class="data-row"><span>Estadía en Marte</span><span class="val">~18 meses</span></div>
+          <div class="data-row"><span>Retorno a Tierra</span><span class="val">9 meses</span></div>
+          <div class="data-row"><span>Misión total</span><span class="val">~34 meses</span></div>
+        </div>
+
+        <div class="sidebar-box">
+          <h4>¿Sabías que?</h4>
+          <div class="sidebar-item">Un día en Marte (sol) dura 24h 37min — casi idéntico al terrestre, lo cual es una coincidencia astronómica muy conveniente.</div>
+          <div class="sidebar-item">La temperatura media en Marte es -63°C, pero puede llegar a 20°C al mediodía en el ecuador durante el verano.</div>
+          <div class="sidebar-item">Marte tiene las tormentas de polvo más grandes del sistema solar. Algunas cubren el planeta entero durante meses.</div>
+          <div class="sidebar-item">El Monte Olimpo marciano mide 21 km de altura — tres veces el Everest.</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer-wrapper">
+
+    <div class="footer-masthead">
+      <div class="name">EL <span>COSMOS</span></div>
+      <div class="footer-tagline">"Todo lo que existe, existe en el espacio — y el espacio no para de expandirse"</div>
+    </div>
+
+    <div class="footer-sections">
+
+      <div class="footer-col">
+        <h5>Sobre este periódico</h5>
+        <p>El Cosmos es una publicación independiente dedicada a la divulgación científica y la cobertura periodística de la exploración espacial. Fundado en 2025, publicamos ediciones semanales con análisis en profundidad, reportajes de campo y opinión especializada.</p>
+        <p>Nuestro equipo está formado por periodistas científicos, ex-ingenieros aeroespaciales y colaboradores de doce países.</p>
+      </div>
+
+      <div class="footer-col">
+        <h5>Secciones</h5>
+        <ul>
+          <li><strong>Portada & Análisis</strong>Las grandes historias de la semana espacial</li>
+          <li><strong>Ciencia & Descubrimiento</strong>Astronomía, biología y física</li>
+          <li><strong>Tecnología Orbital</strong>Cohetes, satélites e ingeniería</li>
+          <li><strong>La Ruta a Marte</strong>Cobertura dedicada a la exploración marciana</li>
+          <li><strong>Opinión Galáctica</strong>Voces del sector espacial</li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h5>Equipo editorial</h5>
+        <ul>
+          <li><strong>Valentina Cruz</strong>Editora en Jefe & Ciencia</li>
+          <li><strong>Dr. Arnav Bose</strong>Director Científico</li>
+          <li><strong>Rashida Kamau</strong>Corresponsal de Exploración</li>
+          <li><strong>Marcus Okonkwo</strong>Economía Espacial</li>
+          <li><strong>Ingrid Sørensen</strong>Tecnología & Ingeniería</li>
+          <li><strong>Lyra Kessler</strong>Editorialista</li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h5>Contacto & Suscripción</h5>
+        <ul>
+          <li><strong>Redacción General</strong>redaccion@elcosmos.esp</li>
+          <li><strong>Cartas al Director</strong>cartas@elcosmos.esp</li>
+          <li><strong>Publicidad</strong>publicidad@elcosmos.esp</li>
+          <li><strong>Suscripciones</strong>2 créditos lunares / semana</li>
+          <li><strong>Archivo Digital</strong>archivo.elcosmos.esp</li>
+        </ul>
+      </div>
+
+    </div>
+
+
+
+  </footer>
+
+</div>
+
+</body>
+</html>
